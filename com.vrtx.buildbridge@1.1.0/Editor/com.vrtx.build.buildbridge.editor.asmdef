@@ -1,0 +1,12 @@
+{
+    "name": "com.vrtx.build.buildbridge.editor",
+    "references": [],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
+}
