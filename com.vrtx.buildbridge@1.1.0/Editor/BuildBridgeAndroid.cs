@@ -17,6 +17,8 @@ namespace VRTX.Build
 
         private static DirectoryInfo _diProject = null;
         private static string _pathAPK = string.Empty;
+        private static string _nameAPK = string.Empty;
+
         public static string PathAPK
         {
             get
@@ -28,6 +30,15 @@ namespace VRTX.Build
                 if (_pathAPK.Equals(string.Empty))
                     _pathAPK = _diProject.FullName;
                 return _pathAPK;
+            }
+        }
+        public static string NameAPK
+        {
+            get
+            {
+                if (String.IsNullOrEmpty(_nameAPK))
+                    _nameAPK = PlayerSettings.productName + ".apk";
+                return _nameAPK;
             }
         }
 
@@ -67,7 +78,17 @@ namespace VRTX.Build
 
         public override bool Generate(BuildOptions options, Action callback)
         {
-            return BuildBridgeUtilities.BuildSource(BuildBridgeIOS.PathXCode, BuildTarget.Android, options);
+            string[] prevValues = new string[] { PlayerSettings.Android.keyaliasName, PlayerSettings.Android.keyaliasPass };
+            // reset keyAlias to create debug apk
+            PlayerSettings.Android.keyaliasName = string.Empty;
+            PlayerSettings.Android.keyaliasPass = string.Empty;
+            // run project generation
+            bool result = BuildBridgeUtilities.BuildSource(Path.Combine(BuildBridgeAndroid.PathAPK, BuildBridgeAndroid.NameAPK), BuildTarget.Android, options);
+            // restore previous keyAlias settings
+            PlayerSettings.Android.keyaliasName = prevValues[0];
+            PlayerSettings.Android.keyaliasPass = prevValues[1];
+
+            return result;
         }
         public override bool Build(string args, Action callback)
         {
