@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using UnityEditor;
-#if UNITY_2018_1_OR_NEWER
-using UnityEditor.Build.Reporting;
-#endif
-using UnityEngine;
 
 namespace VRTX.Build
 {
@@ -115,26 +110,26 @@ namespace VRTX.Build
     /// <typeparam name="T">Class type of the singleton</typeparam>
     public abstract class SingletonBase<T> where T : class
     {
-        #region Members
-
         /// <summary>
         /// Static instance. Needs to use lambda expression
         /// to construct an instance (since constructor is private).
         /// </summary>
+#if NET_4_6 || NET_STANDARD_2_0
         private static readonly Lazy<T> sInstance = new Lazy<T>(() => CreateInstanceOfT());
-
-        #endregion
-
-        #region Properties
-
         /// <summary>
         /// Gets the instance of this singleton.
         /// </summary>
         public static T Instance { get { return sInstance.Value; } }
+#else
+        private static readonly T sInstance = CreateInstanceOfT();
+        /// <summary>
+        /// Gets the instance of this singleton.
+        /// </summary>
+        public static T Instance { get { return sInstance; } }
+#endif
 
-        #endregion
-
-        #region Methods
+        protected SingletonBase()
+        { }
 
         /// <summary>
         /// Creates an instance of T via reflection since T's constructor is expected to be private.
@@ -145,7 +140,6 @@ namespace VRTX.Build
             return Activator.CreateInstance(typeof(T), true) as T;
         }
 
-        #endregion
     }
 
 }

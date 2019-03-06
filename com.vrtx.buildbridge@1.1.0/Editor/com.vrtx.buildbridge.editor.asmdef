@@ -1,8 +1,10 @@
 {
-    "name": "com.vrtx.build.buildbridge.editor",
+    "name": "com.vrtx.buildbridge.editor",
     "references": [],
     "optionalUnityReferences": [],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
