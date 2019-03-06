@@ -1,6 +1,6 @@
 ﻿using System;
 using UnityEditor;
-#if UNITY_2018_1_OR_NEWER
+#if UNITY_EDITOR && UNITY_2018_1_OR_NEWER
 using UnityEditor.Build.Reporting;
 #endif
 
@@ -19,7 +19,7 @@ namespace VRTX.Build
         }
         private static bool BuildSourceProject(string path, BuildTarget target, BuildOptions options = BuildOptions.None)
         {
-#if UNITY_2018_1_OR_NEWER
+#if UNITY_EDITOR && UNITY_2018_1_OR_NEWER
             BuildPlayerOptions buildOptions = new BuildPlayerOptions();
 
             // set editor build scene list
