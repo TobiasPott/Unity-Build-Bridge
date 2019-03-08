@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using UnityEditor;
+using UnityEditor.Build.Reporting;
 #if UNITY_2018_1_OR_NEWER
 #endif
 
@@ -13,7 +14,7 @@ namespace VRTX.Build
         private const string OTADeploy = "Toolchain/deployota.exe";
 
         private static string Path_IOS_Packages
-        { get { return Path.Combine(PathXCode, "Packages"); } }
+        { get { return Path.Combine(OutputPathXCode, "Packages"); } }
 
         private static string Path_BuildEnv_BuildCMD
         { get { return Path.Combine(BuildBridgePreferences.EnvironmentPath, "build.cmd"); } }
@@ -21,8 +22,10 @@ namespace VRTX.Build
         { get { return Path.Combine(BuildBridgePreferences.EnvironmentPath, "Toolchain\\ideployota.exe"); } }
 
         private static DirectoryInfo _diProject = null;
-        private static string _pathXCode = string.Empty;
-        public static string PathXCode
+        private static string _outputPathXCode = string.Empty;
+        //private static string _appIdentifier = string.Empty;
+
+        public static string OutputPathXCode
         {
             get
             {
@@ -30,11 +33,20 @@ namespace VRTX.Build
                     _diProject = new DirectoryInfo(UnityEngine.Application.dataPath).Parent;
                 if (!_diProject.Exists)
                     _diProject.Create();
-                if (_pathXCode.Equals(string.Empty))
-                    _pathXCode = Path.Combine(_diProject.FullName, "Xcode");
-                return _pathXCode;
+                if (_outputPathXCode.Equals(string.Empty))
+                    _outputPathXCode = Path.Combine(_diProject.FullName, "Xcode");
+                return _outputPathXCode;
             }
         }
+        //public static string AppIdentifier
+        //{
+        //    get
+        //    {
+        //        if (String.IsNullOrEmpty(_appIdentifier))
+        //            _appIdentifier = PlayerSettings.applicationIdentifier;
+        //        return _appIdentifier;
+        //    }
+        //}
 
 
         private const string BuildArgs_Default = "-multicore -ipa -archs \"arm64\" -cleanmodules -deploy -xcname \"Unity-iPhone\" ";
@@ -63,21 +75,29 @@ namespace VRTX.Build
 
         public override bool Generate(BuildOptions options, Action callback)
         {
-            return BuildBridgeUtilities.BuildSource(BuildBridgeIOS.PathXCode, BuildTarget.iOS, options);
+            BuildReport report = null;
+            bool result = BuildBridgeUtilities.BuildSourceWithReport(BuildBridgeIOS.OutputPathXCode, BuildTarget.iOS, options, out report);
+            if (result)
+            {
+                UnityEngine.Debug.Log("Build succeeded: " + report.summary.outputPath);
+                if (callback != null) callback.Invoke();
+            }
+            return result;
         }
+
+
         public override bool Build(string args, Action callback)
         {
-            string path = BuildBridgeIOS.PathXCode;
+            string path = BuildBridgeIOS.OutputPathXCode;
             Process p = new Process();
             UnityEngine.Debug.Log(Path_BuildEnv_BuildCMD + " " + "\"" + path + "\" " + args);
             p.StartInfo = new ProcessStartInfo(Path_BuildEnv_BuildCMD, "\"" + path + "\" " + args);
             p.EnableRaisingEvents = true;
-            p.Exited += (object sender, System.EventArgs e) =>
-            { if (callback != null) callback.Invoke(); };
 
             if (p.Start())
             {
                 UnityEngine.Debug.Log("iOS Build started..");
+                if (callback != null) callback.Invoke();
                 return true;
             }
             return false;
@@ -129,17 +149,47 @@ namespace VRTX.Build
         }
         public override bool BuildSteps(IBuildBridgeSteps steps, BuildOptions options, string args, Action generateCallback, Action buildCallback, Action deployCallback)
         {
-            // ! ! ! !
-            // elaborate: use the callbacks to include the next steps into the invokation chain
-            //if ((steps & IBuildBridgeSteps.Generate) == IBuildBridgeSteps.Generate)
-            //    this.Generate(options, null);
+            // put together the last callback (invoking deploy step)
+            Action buildStepCallback = () =>
+            {
+                if ((steps & IBuildBridgeSteps.Deploy) == IBuildBridgeSteps.Deploy)
+                {
+                    UnityEngine.Debug.Log("Deploy...");
+                    this.Deploy(deployCallback);
+                }
+                if (buildCallback != null) buildCallback.Invoke();
+            };
+            // put together the second callback (invoking build step)
+            Action generateStepCallback = () =>
+            {
+                if ((steps & IBuildBridgeSteps.Build) == IBuildBridgeSteps.Build)
+                    this.Build(args, buildStepCallback);
+                if (generateCallback != null) generateCallback.Invoke();
+            };
+            // put together the initial callback (invoking generate step)
+            Action callback = () =>
+            {
+                if ((steps & IBuildBridgeSteps.Generate) == IBuildBridgeSteps.Generate)
+                    this.Generate(options, generateStepCallback);
+            };
 
-            //if ((steps & IBuildBridgeSteps.Build) == IBuildBridgeSteps.Build)
-            //    this.Build(args, null);
+            callback.Invoke();
 
-            //if ((steps & IBuildBridgeSteps.Deploy) == IBuildBridgeSteps.Deploy)
-            //    this.Deploy(null);
-            return false;
+            return true;
+        }
+
+        public override bool VerifyToolchain()
+        {
+            // check for iOS Build environment path and existance of build.cmd script file
+            return base.VerifyToolchain();
+        }
+
+        private static void Prepare()
+        {
+            string prepareMessage = "Preparing iOS Unity Build Bridge Step.." + Environment.NewLine
+                + "OutputPathXcode: " + OutputPathXCode + Environment.NewLine
+                + "AppIdentifier: " + AppIdentifier;
+            UnityEngine.Debug.Log(prepareMessage);
         }
 
     }
