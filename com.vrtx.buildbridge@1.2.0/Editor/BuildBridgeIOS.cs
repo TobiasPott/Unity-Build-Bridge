@@ -56,10 +56,10 @@ namespace VRTX.Build
 
         [MenuItem(BuildBridgeMenu.MenuBase + "Generate, Build and Deploy (iOS)", priority = BuildBridgeMenu.PriorityBasePlatforms + 4)]
         public new static void GenerateBuildAndDeploy()
-        { Instance.BuildSteps(IBuildBridgeSteps.Generate | IBuildBridgeSteps.Build | IBuildBridgeSteps.Deploy, BuildOptions.None, "", null, null, null); }
+        { Instance.BuildSteps(IBuildBridgeSteps.Generate | IBuildBridgeSteps.Build | IBuildBridgeSteps.Deploy, BuildOptions.None, BuildBridgeIOS.BuildArgs_Default, null, null, null); }
 
         public new static void GenerateAndBuild()
-        { Instance.BuildSteps(IBuildBridgeSteps.Generate | IBuildBridgeSteps.Build, BuildOptions.None, "", null, null, null); }
+        { Instance.BuildSteps(IBuildBridgeSteps.Generate | IBuildBridgeSteps.Build, BuildOptions.None, BuildBridgeIOS.BuildArgs_Default, null, null, null); }
 #endif
 
 
@@ -81,12 +81,12 @@ namespace VRTX.Build
             string path = BuildBridgeIOS.OutputPathXCode;
             Process p = new Process();
             UnityEngine.Debug.Log(Path_BuildEnv_BuildCMD + " " + "\"" + path + "\" " + args);
-            p.StartInfo = new ProcessStartInfo(Path_BuildEnv_BuildCMD, "\"" + path + "\" " + args);
-            p.EnableRaisingEvents = true;
+            p.StartInfo = new ProcessStartInfo(Path_BuildEnv_BuildCMD, " " + "\"" + path + "\" " + args);
 
             if (p.Start())
             {
                 UnityEngine.Debug.Log("iOS Build started..");
+                p.WaitForExit();
                 if (callback != null) callback.Invoke();
                 return true;
             }
