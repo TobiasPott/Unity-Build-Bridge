@@ -44,7 +44,6 @@ namespace VRTX.Build
             buildOptions.locationPathName = path;
             buildOptions.options = options;
             BuildReport report = BuildPipeline.BuildPlayer(buildOptions);
-            UnityEngine.Debug.Log("Unity build result: " + report.steps.Length);
             return report;
 #else
             UnityEngine.Debug.Log("Unity build result: " + BuildPipeline.BuildPlayer(EditorBuildSettings.scenes, path, target, options));
