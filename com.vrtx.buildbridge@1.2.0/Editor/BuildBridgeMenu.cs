@@ -43,6 +43,9 @@ namespace VRTX.Build
         [MenuItem(BuildBridgeMenu.MenuBase + "Generate, Build and Deploy " + BuildBridgeMenu.HotKeyModifier + "F", priority = BuildBridgeMenu.PriorityBase + 4)]
         public static void CurrentGenerateBuildAndDeploy()
         { CallOnCurrentImplementation(BuildBridgeMethods.GenerateBuildAndDeploy); }
+
+        public static void CurrentGenerateAndBuild()
+        { CallOnCurrentImplementation(BuildBridgeMethods.GenerateAndBuild); }
 #endif
 
         private static void CallOnCurrentImplementation(BuildBridgeMethods method)

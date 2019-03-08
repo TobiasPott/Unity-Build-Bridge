@@ -1,8 +1,6 @@
 ﻿using System;
 using UnityEditor;
-#if UNITY_EDITOR && UNITY_2018_1_OR_NEWER
 using UnityEditor.Build.Reporting;
-#endif
 
 namespace VRTX.Build
 {
@@ -26,13 +24,8 @@ namespace VRTX.Build
         }
 
 
-#if UNITY_EDITOR && UNITY_2018_1_OR_NEWER
         private static BuildReport BuildSourceProject(string path, BuildTarget target, BuildOptions options = BuildOptions.None)
-#else
-        private static bool BuildSourceProject(string path, BuildTarget target, BuildOptions options = BuildOptions.None)
-#endif
         {
-#if UNITY_EDITOR && UNITY_2018_1_OR_NEWER
             BuildPlayerOptions buildOptions = new BuildPlayerOptions();
 
             // set editor build scene list
@@ -45,27 +38,16 @@ namespace VRTX.Build
             buildOptions.options = options;
             BuildReport report = BuildPipeline.BuildPlayer(buildOptions);
             return report;
-#else
-            UnityEngine.Debug.Log("Unity build result: " + BuildPipeline.BuildPlayer(EditorBuildSettings.scenes, path, target, options));
-            return true;
-#endif
             // ! ! ! !
             // need to check results to provide accurate return value
         }
 
-#if UNITY_EDITOR && UNITY_2018_1_OR_NEWER
         internal static bool BuildSourceWithReport(string path, BuildTarget target, BuildOptions options, out BuildReport report)
         {
             report = BuildSourceProject(path, target, options);
             return report.summary.result == BuildResult.Succeeded;
         }
-#else
-        internal static bool BuildSourceProjectWithReport(string path, BuildTarget target, BuildOptions options, out object report)
-        {
-            report = null;
-            BuildSourceProject(EditorBuildSettings.scenes, path, target, options);
-        }
-#endif
+
         internal static bool BuildSource(string path, BuildTarget target, BuildOptions options = BuildOptions.None)
         {
             return BuildSourceProject(path, target, options);

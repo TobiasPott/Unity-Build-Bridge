@@ -20,13 +20,11 @@ namespace VRTX.Build
         private const string CMDGradleParamAssembleDebug = "assembleDebug";
         private const string CMDGradleParamAssembleRelease = "assembleRelease";
 
-
         private const string GradleBuildFileName = "build.gradle";
         private const string GradlePropertiesFileName = "gradle.properties";
 
 
-        private static DirectoryInfo _diProject = null;
-        //private static string _appIdentifier = string.Empty;
+
         private static string _pathProject = string.Empty;
         private static string _outputPathGradle = string.Empty;
         private static string _outputNameAPK = string.Empty;
@@ -64,15 +62,6 @@ namespace VRTX.Build
                 return _outputNameAPK;
             }
         }
-        //public static string AppIdentifier
-        //{
-        //    get
-        //    {
-        //        if (String.IsNullOrEmpty(_appIdentifier))
-        //            _appIdentifier = PlayerSettings.applicationIdentifier;
-        //        return _appIdentifier;
-        //    }
-        //}
 
         public static string PathSDK
         { get { return EditorPrefs.GetString("AndroidSdkRoot"); } }
@@ -96,6 +85,9 @@ namespace VRTX.Build
         [MenuItem(BuildBridgeMenu.MenuBase + "Generate, Build and Deploy (Android)", priority = BuildBridgeMenu.PriorityBasePlatforms + 4)]
         public new static void GenerateBuildAndDeploy()
         { Instance.BuildSteps(IBuildBridgeSteps.Generate | IBuildBridgeSteps.Build | IBuildBridgeSteps.Deploy, BuildOptions.None, "", null, null, null); }
+
+        public new static void GenerateAndBuild()
+        { Instance.BuildSteps(IBuildBridgeSteps.Generate | IBuildBridgeSteps.Build, BuildOptions.None, "", null, null, null); }
 #endif
 
         private static void DeployProcess_Exited(object sender, System.EventArgs e)
