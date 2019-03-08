@@ -28,11 +28,25 @@ namespace VRTX.Build
         bool Build(string args, Action callback);
         bool Deploy(Action callback);
         bool OpenLocation();
-        bool BuildSteps(IBuildBridgeSteps steps, BuildOptions options, string args, Action generateCallback, Action buildCallback, Action deployCallback);
+        bool BuildSteps(IBuildBridgeSteps steps, BuildOptions options, string args, Action generateCallback, Action buildCallback, Action deployCallback); // change this to use default parameter values
+        bool VerifyToolchain();
     }
 
     public abstract class BuildBridgeBase<T> : SingletonBase<T>, IBuildBridge where T : class
     {
+        // static properties shared by build bridge implementations
+        private static string _appIdentifier = string.Empty;
+
+        protected static string AppIdentifier
+        {
+            get
+            {
+                if (String.IsNullOrEmpty(_appIdentifier))
+                    _appIdentifier = PlayerSettings.applicationIdentifier;
+                return _appIdentifier;
+            }
+        }
+
 
         public static void BuildBridgeGenerate()
         { }
@@ -50,7 +64,8 @@ namespace VRTX.Build
 
         public abstract bool OpenLocation();
         public abstract bool BuildSteps(IBuildBridgeSteps steps, BuildOptions options, string args, Action generateCallback, Action buildCallback, Action deployCallback);
-
+        public virtual bool VerifyToolchain()
+        { return false; }
 
         private static string GetPlatformIdentifierLI()
         {

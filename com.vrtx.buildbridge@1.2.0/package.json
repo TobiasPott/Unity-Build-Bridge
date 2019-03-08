@@ -1,14 +1,14 @@
 {
 	"displayName": "Unity Build Bridge",
 	"name": "com.vrtx.buildbridge",
-	"version": "1.1.0",
-	"unity": "2017.4",
+	"version": "1.2.0",
+	"unity": "2018.1",
 	"description": "Unity Build Bridge",	
 	"dependencies": {}, 
 	"repository": {
 		"revision": "bf46ec0c63f1581ca9e0917a95bac20ce7bc733b", 
 		"type": "git", 
-		"url": ""
+		"url": "https://github.com/TobiasPott/Unity-Build-Bridge.git"
 	},
 	"keywords": [
 		"build",
