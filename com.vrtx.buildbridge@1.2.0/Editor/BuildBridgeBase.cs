@@ -20,7 +20,8 @@ namespace VRTX.Build
         BuildBridgeGenerate,
         BuildBridgeBuild,
         BuildBridgeDeploy,
-        GenerateBuildAndDeploy
+        GenerateAndBuild,
+        GenerateBuildAndDeploy,
     }
 
     internal interface IBuildBridge
