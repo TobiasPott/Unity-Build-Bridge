@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using UnityEditor;
@@ -36,6 +37,7 @@ namespace VRTX.Build
     {
         // static properties shared by build bridge implementations
         private static string _appIdentifier = string.Empty;
+        protected static DirectoryInfo _diProject = null;
 
         protected static string AppIdentifier
         {
@@ -53,6 +55,8 @@ namespace VRTX.Build
         public static void BuildBridgeBuild()
         { }
         public static void BuildBridgeDeploy()
+        { }
+        public static void GenerateAndBuild()
         { }
         public static void GenerateBuildAndDeploy()
         { }

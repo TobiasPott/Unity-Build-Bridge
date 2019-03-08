@@ -1,7 +1,7 @@
 {
 	"displayName": "Unity Build Bridge",
 	"name": "com.vrtx.buildbridge",
-	"version": "1.2.0",
+	"version": "1.2.1",
 	"unity": "2018.1",
 	"description": "Unity Build Bridge",	
 	"dependencies": {}, 

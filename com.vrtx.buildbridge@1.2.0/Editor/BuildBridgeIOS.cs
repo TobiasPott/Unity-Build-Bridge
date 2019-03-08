@@ -21,9 +21,8 @@ namespace VRTX.Build
         private static string Path_BuildEnv_OTADeploy
         { get { return Path.Combine(BuildBridgePreferences.EnvironmentPath, "Toolchain\\ideployota.exe"); } }
 
-        private static DirectoryInfo _diProject = null;
+
         private static string _outputPathXCode = string.Empty;
-        //private static string _appIdentifier = string.Empty;
 
         public static string OutputPathXCode
         {
@@ -38,15 +37,6 @@ namespace VRTX.Build
                 return _outputPathXCode;
             }
         }
-        //public static string AppIdentifier
-        //{
-        //    get
-        //    {
-        //        if (String.IsNullOrEmpty(_appIdentifier))
-        //            _appIdentifier = PlayerSettings.applicationIdentifier;
-        //        return _appIdentifier;
-        //    }
-        //}
 
 
         private const string BuildArgs_Default = "-multicore -ipa -archs \"arm64\" -cleanmodules -deploy -xcname \"Unity-iPhone\" ";
@@ -66,10 +56,10 @@ namespace VRTX.Build
 
         [MenuItem(BuildBridgeMenu.MenuBase + "Generate, Build and Deploy (iOS)", priority = BuildBridgeMenu.PriorityBasePlatforms + 4)]
         public new static void GenerateBuildAndDeploy()
-        {
-            if (Instance.Generate(BuildOptions.None, null))
-                Instance.Build(BuildBridgeIOS.BuildArgs_Default, null);
-        }
+        { Instance.BuildSteps(IBuildBridgeSteps.Generate | IBuildBridgeSteps.Build | IBuildBridgeSteps.Deploy, BuildOptions.None, "", null, null, null); }
+
+        public new static void GenerateAndBuild()
+        { Instance.BuildSteps(IBuildBridgeSteps.Generate | IBuildBridgeSteps.Build, BuildOptions.None, "", null, null, null); }
 #endif
 
 
