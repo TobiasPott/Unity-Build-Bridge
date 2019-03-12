@@ -82,11 +82,9 @@ namespace VRTX.Build
             Process p = new Process();
             UnityEngine.Debug.Log(Path_BuildEnv_BuildCMD + " " + "\"" + path + "\" " + args);
             p.StartInfo = new ProcessStartInfo(Path_BuildEnv_BuildCMD, " " + "\"" + path + "\" " + args);
-
             if (p.Start())
             {
                 UnityEngine.Debug.Log("iOS Build started..");
-                p.WaitForExit();
                 if (callback != null) callback.Invoke();
                 return true;
             }

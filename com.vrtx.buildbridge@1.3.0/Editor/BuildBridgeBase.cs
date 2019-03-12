@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using UnityEditor;
+using UnityEngine;
 
 namespace VRTX.Build
 {
@@ -38,6 +39,7 @@ namespace VRTX.Build
     {
         // static properties shared by build bridge implementations
         private static string _appIdentifier = string.Empty;
+        private static bool? _isBatchMode = null;
         protected static DirectoryInfo _diProject = null;
 
         protected static string AppIdentifier
@@ -49,7 +51,15 @@ namespace VRTX.Build
                 return _appIdentifier;
             }
         }
-
+        protected static bool IsBatchMode
+        {
+            get
+            {
+                if (!_isBatchMode.HasValue)
+                    _isBatchMode = Application.isBatchMode;
+                return _isBatchMode.Value;
+            }
+        }
 
         public static void BuildBridgeGenerate()
         { }
