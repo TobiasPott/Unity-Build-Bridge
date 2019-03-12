@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using UnityEditor;
 using UnityEditor.Build.Reporting;
+using UnityEngine;
 
 namespace VRTX.Build
 {
@@ -296,6 +297,18 @@ namespace VRTX.Build
                 PlayerSettings.Android.keyaliasPass = string.Empty;
                 EditorUserBuildSettings.androidBuildSystem = AndroidBuildSystem.Gradle;
                 EditorUserBuildSettings.exportAsGoogleAndroidProject = true;
+            }
+
+        }
+
+        public class Preferences
+        {
+            [PreferenceItem("Unity Build Bridge/Android")]
+            public static void PreferencesGUI()
+            {
+                // compiler options
+                EditorGUILayout.HelpBox("These settings & options are specifically for the Android build pipeline based on gradle on a windows system.", MessageType.None, true);
+
             }
 
         }
