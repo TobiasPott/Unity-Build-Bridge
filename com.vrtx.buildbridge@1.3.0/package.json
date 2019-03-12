@@ -1,19 +1,20 @@
 {
-	"displayName": "Unity Build Bridge",
-	"name": "com.vrtx.buildbridge",
-	"version": "1.3.0",
-	"unity": "2018.1",
-	"description": "Unity Build Bridge",	
-	"dependencies": {}, 
-	"repository": {
-		"revision": "bf46ec0c63f1581ca9e0917a95bac20ce7bc733b", 
-		"type": "git", 
-		"url": "https://github.com/TobiasPott/Unity-Build-Bridge.git"
-	},
-	"keywords": [
-		"build",
-		"editor extension",
-		"unity"
-	],
-	"category": "Editor Extension"
+  "displayName": "Unity Build Bridge",
+  "name": "com.vrtx.buildbridge",
+  "version": "1.3.0",
+  "unity": "2018.1",
+  "author": "Tobias Pott",
+  "description": "Use the Unity Build Bridge to simplify build processes for iOS and Android apps on Windows platform.",
+  "dependencies": {},
+  "repository": {
+    "revision": "bf46ec0c63f1581ca9e0917a95bac20ce7bc733b",
+    "type": "git",
+    "url": "https://github.com/TobiasPott/Unity-Build-Bridge.git"
+  },
+  "keywords": [
+    "build",
+    "editor extension",
+    "unity"
+  ],
+  "category": "Editor Extension"
 }
