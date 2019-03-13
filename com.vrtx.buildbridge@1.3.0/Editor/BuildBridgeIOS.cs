@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.IO;
 using UnityEditor;
 using UnityEditor.Build.Reporting;
-using UnityEngine;
 #if UNITY_2018_1_OR_NEWER
 #endif
 
@@ -65,7 +64,7 @@ namespace VRTX.Build
 #endif
 
 
-        public override bool Generate(BuildOptions options, Action callback)
+        public override bool Generate(BuildOptions options, Action callback = null)
         {
             BuildReport report = null;
             bool result = BuildBridgeUtilities.BuildSourceWithReport(BuildBridgeIOS.OutputPathXCode, BuildTarget.iOS, options, out report);
@@ -78,7 +77,7 @@ namespace VRTX.Build
         }
 
 
-        public override bool Build(string args, Action callback)
+        public override bool Build(string args, Action callback = null)
         {
             string path = BuildBridgeIOS.OutputPathXCode;
             Process p = new Process();
@@ -93,11 +92,9 @@ namespace VRTX.Build
             return false;
             // "%USERPROFILE%\iOS Build Environment\build.cmd" C:\Development\OpenCV\XCode -multicore -ipa -archs "arm64"
         }
-        public override bool Deploy(Action callback)
-        {
-            return this.Deploy(false, callback);
-        }
-        private bool Deploy(bool multiple, Action callback)
+        public override bool Deploy(Action callback = null)
+        { return this.Deploy(false, callback); }
+        private bool Deploy(bool multiple, Action callback = null)
         {
             //  multiple";
             string path = BuildBridgeIOS.Path_IOS_Packages;
@@ -137,7 +134,7 @@ namespace VRTX.Build
                 return true;
             return false;
         }
-        public override bool BuildSteps(IBuildBridgeSteps steps, BuildOptions options, string args, Action generateCallback, Action buildCallback, Action deployCallback)
+        public override bool BuildSteps(IBuildBridgeSteps steps, BuildOptions options, string args, Action generateCallback = null, Action buildCallback = null, Action deployCallback = null)
         {
             // put together the last callback (invoking deploy step)
             Action buildStepCallback = () =>
@@ -178,7 +175,8 @@ namespace VRTX.Build
         {
             string prepareMessage = "Preparing iOS Unity Build Bridge Step.." + Environment.NewLine
                 + "OutputPathXcode: " + OutputPathXCode + Environment.NewLine
-                + "AppIdentifier: " + AppIdentifier;
+                + "AppIdentifier: " + AppIdentifier + Environment.NewLine
+                + "IsBatchMode: " + IsBatchMode;
             UnityEngine.Debug.Log(prepareMessage);
         }
 

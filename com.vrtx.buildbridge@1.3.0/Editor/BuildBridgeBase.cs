@@ -27,11 +27,11 @@ namespace VRTX.Build
 
     internal interface IBuildBridge
     {
-        bool Generate(BuildOptions options, Action callback);
-        bool Build(string args, Action callback);
-        bool Deploy(Action callback);
+        bool Generate(BuildOptions options, Action callback = null);
+        bool Build(string args, Action callback = null);
+        bool Deploy(Action callback = null);
         bool OpenLocation();
-        bool BuildSteps(IBuildBridgeSteps steps, BuildOptions options, string args, Action generateCallback, Action buildCallback, Action deployCallback); // change this to use default parameter values
+        bool BuildSteps(IBuildBridgeSteps steps, BuildOptions options, string args, Action generateCallback = null, Action buildCallback = null, Action deployCallback = null); // change this to use default parameter values
         bool VerifyToolchain();
     }
 
@@ -73,12 +73,12 @@ namespace VRTX.Build
         { }
 
 
-        public abstract bool Generate(BuildOptions options, Action callback);
-        public abstract bool Build(string args, Action callback);
-        public abstract bool Deploy(Action callback);
+        public abstract bool Generate(BuildOptions options, Action callback = null);
+        public abstract bool Build(string args, Action callback = null);
+        public abstract bool Deploy(Action callback = null);
 
         public abstract bool OpenLocation();
-        public abstract bool BuildSteps(IBuildBridgeSteps steps, BuildOptions options, string args, Action generateCallback, Action buildCallback, Action deployCallback);
+        public abstract bool BuildSteps(IBuildBridgeSteps steps, BuildOptions options, string args, Action generateCallback = null, Action buildCallback = null, Action deployCallback = null);
         public virtual bool VerifyToolchain()
         { return false; }
 
