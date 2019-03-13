@@ -215,7 +215,7 @@ namespace VRTX.Build
                 { PKey_iOSOptionCompileWithMultipleCores, new PreferenceUIOption.Bool(PKey_iOSOptionCompileWithMultipleCores, true, "Use multiple cores", "Allow the compiler to use all available cores on this machine") },
                 { PKey_iOSOptionBuildArchitecture64, new PreferenceUIOption.Bool(PKey_iOSOptionBuildArchitecture64, true, "Build 64-bit", "Build the 64-bit version of the application bundle") },
                 //{ PKey_iOSOptionBuildArchitecture32, new PreferenceUIOptions.Bool(PKey_iOSOptionBuildArchitecture32, false, "Build 32-bit", "Build the 32-bit version of the application bundle") },
-                { PKey_iOSOptionDeployAfterBuild, new PreferenceUIOption.Bool(PKey_iOSOptionDeployAfterBuild, true, "Deploy OTA", "Invoke the over-the-air deployment of the application bundle") }
+                { PKey_iOSOptionDeployAfterBuild, new PreferenceUIOption.Bool(PKey_iOSOptionDeployAfterBuild, false, "Deploy OTA", "Invoke the over-the-air deployment of the application bundle") }
             };
 
 
